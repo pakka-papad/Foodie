@@ -1,12 +1,27 @@
 import './App.css';
+import { Route, Switch } from 'react-router-dom';
+import Login from './components/Login';
+import NotFound from  './components/NotFound';
+import SignUp from './components/SignUp';
+import Home from './components/Home';
 
 function App() {
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>Hello World</p>
-      </header>
-    </div>
+    <>
+    <Switch>
+      <Route exact path='/' >
+        <Login />
+      </Route>
+      <Route exact path='/signup' >
+        <SignUp />
+      </Route>
+      <Route exact path='/home' >
+        <Home />
+      </Route>
+      <Route component={NotFound} />
+    </Switch>
+  </>
   );
 }
 
