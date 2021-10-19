@@ -1,0 +1,24 @@
+.small-card{
+    height: 230px;
+    width: 270px;
+    border-radius: 30px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    display: flex;
+    flex-direction: column;
+}
+
+.recipe-image{
+    width: 270px;
+    height: 180px;
+    border-radius: 30px 30px 0px 0px;
+}
+
+.recipe-title{
+    width: 270px;
+    height: 50px;
+    border-radius: 0px 0px 30px 30px;
+    margin: 0px;
+    padding: 5px 20px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}

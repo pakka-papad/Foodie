@@ -1,0 +1,36 @@
+body {
+    margin: 0px 0px;
+    padding: 0px 0px;
+    overflow-y: scroll;
+    background-image: url('./resources/background.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    left: 0px;
+}
+
+body::-webkit-scrollbar{
+    display: none;
+}
+
+.greeting{
+    color: white;
+    text-align: center;
+    font-size: 60px;
+    padding: 40px 0px;
+}
+
+.content{
+    background-color: rgba(240, 248, 255);
+    border-radius: 50px 50px 0px 0px;
+    padding: 50px 50px;
+}
+
+.card-group{
+    font-size: 27px;
+}
+
+.cards{
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+}

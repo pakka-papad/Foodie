@@ -1,0 +1,62 @@
+.header{
+    width: 100vw;
+    height: 50px;
+    background-color: rgb(226,55,68);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+}
+
+.logo{
+    width: 30px;
+    height: 30px;
+    padding: 10px;
+    filter: invert(100%);
+    -webkit-filter: invert(100%);
+    cursor: pointer;
+}
+
+.avatar{
+    width: 30px;
+    height: 30px;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.search-form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-box{
+    outline:none;
+    border: 0px;
+    height: 30px;
+    width: 40vw;
+    border-radius: 15px 0px 0px 15px;
+    font-weight:300;
+    padding-left: 10px;
+}
+
+.submit-btn{
+    height: 32px;
+    border-radius: 0px 15px 15px 0px;
+    outline: none;
+    border: 0px;
+    width: 60px;
+    background-color: rgba(240, 255, 255, 0.856);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.search-icon {
+    width: 20px;
+    height: 20px;
+}
