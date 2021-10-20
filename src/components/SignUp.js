@@ -59,7 +59,6 @@ export default function SignUp() {
       .then((user) => {
         setLoading(false)
         history.push('/home');
-        // console.log(user)
       })
       .catch((error) => {
         setLoading(false)

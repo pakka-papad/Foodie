@@ -4,6 +4,7 @@ import Login from './components/Login';
 import NotFound from  './components/NotFound';
 import SignUp from './components/SignUp';
 import Home from './components/Home';
+import RecipeDetails from './components/RecipeDetails';
 
 function App() {
 
@@ -18,6 +19,9 @@ function App() {
       </Route>
       <Route exact path='/home' >
         <Home />
+      </Route>
+      <Route exact path='/recipe/:recipe_id' >
+        <RecipeDetails />
       </Route>
       <Route component={NotFound} />
     </Switch>
