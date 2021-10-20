@@ -8,10 +8,13 @@ import RecipeCard1 from './RecipeCard1'
 import Footer from './Footer'
 import {getAuth} from "firebase/auth"
 import axios from 'axios'
+import { Loading } from './Loading'
 
 const Home = () => {
 
   const history = useHistory()
+  const [recipes, setRecipes] = useState([]);
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(userAuth => {
       if (userAuth) {
@@ -44,57 +47,55 @@ const Home = () => {
       })
   }, []);
 
-  const [randomList, setRandomList] = useState([]);
-  useEffect(() => {
-    const URL = "https://api.spoonacular.com/recipes/random?number=4&apiKey=2db1789966f64f73a63650e15f2cdc2a";
-    
-    // const fetchData = async () => {
-    //   try{
-    //     const response = await fetch(URL,{
-    //       mode: 'no-cors',
-    //       method: "GET",
-    //       credentials: 'include',
-    //       headers: {
-    //         'content-type': 'application/json'
-    //       }
-    //     });
-    //     const restext = await response.text();
-    //     const data = restext === "" ? {} : JSON.parse(restext);
-    //     setRandomList(data.recipes);
-    //     console.log("Home.js",data);
-    //   }
-    //   catch(error) {
-    //     console.log("Home.js",error);
-    //   }
-    // }
 
-    // fetchData();
+  async function fetchData(){
+    const URL = `https://api.spoonacular.com/recipes/random?number=4&apiKey=${process.env.REACT_APP_SPOONACULAR_API_KEY}`;
+
+    await axios.get(URL)
+    .then(res => {
+      setRecipes(res.data.recipes);
+    }).catch(err => {
+      console.log(err);
+    })
+  }
+
+  useEffect(async() => {
+
+    await fetchData();
 
   },[]);
 
-  return (
-    <div>
-      <Header />
-      <h1 className="greeting">{message}</h1>
-      <div className="content">
-        <h3 className="card-group">Top Picks For You</h3>
-        <div className="cards">
-          <RecipeCard1 image="https://source.unsplash.com/random" title="Mutter Panner" />
-          <RecipeCard1 image="https://source.unsplash.com/random" title="Mutter Panner" />
-          <RecipeCard1 image="https://source.unsplash.com/random" title="Mutter Panner" />
-          <RecipeCard1 image="https://source.unsplash.com/random" title="Mutter Panner" />
+  if(recipes.length === 0){
+    return(
+      <Loading />
+    )
+  }
+  else{
+    return (
+      <div>
+        <Header recipes={recipes} setRecipes={setRecipes}/>
+        <h1 className="greeting">{message}</h1>
+        <div className="content">
+          <h3 className="card-group">Top Picks For You</h3>
+          <div className="cards">
+              {recipes.map((item, index) => {
+                return (
+                  <RecipeCard1 image={item.image} title={item.title} key={index} onClick={()=>{history.push(`/recipe/${item.id}`)}}/>
+                )
+              })}
+          </div>
+          <h3 className="card-group">Your Favourites</h3>
+          <div className="cards">
+            <RecipeCard1 image="https://source.unsplash.com/random" title="Mutter Panner" />
+            <RecipeCard1 image="https://source.unsplash.com/random" title="Mutter Panner" />
+            <RecipeCard1 image="https://source.unsplash.com/random" title="Mutter Panner" />
+            <RecipeCard1 image="https://source.unsplash.com/random" title="Mutter Panner" />
+          </div>
         </div>
-        <h3 className="card-group">Your Favourites</h3>
-        <div className="cards">
-          <RecipeCard1 image="https://source.unsplash.com/random" title="Mutter Panner" />
-          <RecipeCard1 image="https://source.unsplash.com/random" title="Mutter Panner" />
-          <RecipeCard1 image="https://source.unsplash.com/random" title="Mutter Panner" />
-          <RecipeCard1 image="https://source.unsplash.com/random" title="Mutter Panner" />
-        </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
-  )
+    )
+  }
 }
 
 export default Home;

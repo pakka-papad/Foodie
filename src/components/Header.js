@@ -3,10 +3,12 @@ import "./Header.css"
 import Logo from "./resources/Logo.png"
 import searchIcon from "./resources/SearchIcon.png"
 import {getAuth} from "firebase/auth"
+import axios from 'axios'
 
-function Header() {
+function Header(props) {
 
     const [displayImage,setDisplayImage] = useState("./resources/Avatar.png");
+    const [query, setQuery] = useState("");
 
     useEffect(() => {
         getAuth().onAuthStateChanged(function(user){
@@ -19,12 +21,33 @@ function Header() {
         })
     },[]);
 
+    const getData = async() => {
+        if(query.trim().toLowerCase() === ""){
+            alert("You did not input any item to be searched")
+        }else{
+            query.trim().toLowerCase().replace(" ", "+")
+            const URL = `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${query}&number=4&apiKey=${process.env.REACT_APP_SPOONACULAR_API_KEY}`
+            await axios.get(URL)
+            .then(res => {
+                console.log(res.data)
+                props.setRecipes(res.data)
+            }).catch(err => {
+                console.log(err)
+            })
+        }
+    }
+
+    const handleSubmit = e => {
+        e.preventDefault();
+        getData();
+    }
+
     return (
         <div>
             <div className="header">
                 <img src={Logo} alt="Foodie-Logo" className="logo"/>
-                <form className="search-form">
-                    <input type="text" className="search-box"></input>
+                <form className="search-form" onSubmit={handleSubmit}>
+                    <input type="text" className="search-box" onChange={(e) => setQuery(e.target.value)}></input>
                     <button type="submit" className="submit-btn">
                         <img src={searchIcon} alt="search-icon" className="search-icon"/>
                     </button>
