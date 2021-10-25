@@ -52,7 +52,7 @@ const RecipeDetails = () => {
   else{
     return (
       <div>
-        <RecipeHeader />
+        <RecipeHeader recipeInfo={info}/>
         <h1 className="greeting">{info.title}</h1>
           <div className="content">
             <div style={{display:"flex", justifyContent: "space-between", alignItems:"center"}}>

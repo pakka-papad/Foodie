@@ -26,11 +26,12 @@ function Header(props) {
             alert("You did not input any item to be searched")
         }else{
             query.trim().toLowerCase().replace(" ", "+")
-            const URL = `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${query}&number=4&apiKey=${process.env.REACT_APP_SPOONACULAR_API_KEY}`
+            const URL = `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${query}&apiKey=${process.env.REACT_APP_SPOONACULAR_API_KEY}`
             await axios.get(URL)
             .then(res => {
                 console.log(res.data)
-                props.setRecipes(res.data)
+                props.setSearchedRecipes(res.data)
+                props.setIsSearched(true);
             }).catch(err => {
                 console.log(err)
             })
@@ -42,10 +43,15 @@ function Header(props) {
         getData();
     }
 
+    const goHome = e => {
+        e.preventDefault();
+        if(props.isSearched === true) props.setIsSearched(false);
+    }
+
     return (
         <div>
             <div className="header">
-                <img src={Logo} alt="Foodie-Logo" className="logo"/>
+                <img src={Logo} alt="Foodie-Logo" className="logo" onClick={goHome}/>
                 <form className="search-form" onSubmit={handleSubmit}>
                     <input type="text" className="search-box" onChange={(e) => setQuery(e.target.value)}></input>
                     <button type="submit" className="submit-btn">

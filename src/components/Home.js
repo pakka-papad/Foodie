@@ -1,5 +1,5 @@
 import React from 'react'
-import { auth } from '../firebase'
+import db, { auth } from '../firebase'
 import { useHistory } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import Header from './Header'
@@ -9,11 +9,15 @@ import Footer from './Footer'
 import {getAuth} from "firebase/auth"
 import axios from 'axios'
 import { Loading } from './Loading'
+import SearchResults from './SearchResults'
 
 const Home = () => {
 
   const history = useHistory()
   const [recipes, setRecipes] = useState([]);
+  const [isSearched,setIsSearched] = useState(false);
+  const [searchedRecipes,setSearchedRecipes] = useState([]);
+  const [favourites,setFavourites] = useState([]);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(userAuth => {
@@ -43,6 +47,22 @@ const Home = () => {
             else{
               setMessage("Good Evening ".concat(name));
             }
+
+
+            let fav = [];
+            db.collection("users").doc(user.uid).collection("favourites").get()
+            .then((querySnapshot) => {
+              querySnapshot.forEach((doc) => {
+                fav.push({
+                  id: doc.id,
+                  title: doc.data().title,
+                  imageURL: doc.data().imageURL
+                });
+              });
+              while(fav.length > 4) fav.pop();
+              setFavourites(fav);
+            })
+            .catch((error) => console.log(error));
         }
       })
   }, []);
@@ -70,10 +90,19 @@ const Home = () => {
       <Loading />
     )
   }
+  else if(isSearched === true){
+    return(
+      <div>
+        <Header searchedRecipes={searchedRecipes} setSearchedRecipes={setSearchedRecipes} isSearched={isSearched} setIsSearched={setIsSearched}/>
+        <SearchResults recipes={searchedRecipes} setIsSearched={setIsSearched} history={history}/>
+        <Footer />
+      </div>
+    )
+  }
   else{
     return (
       <div>
-        <Header recipes={recipes} setRecipes={setRecipes}/>
+        <Header searchedRecipes={searchedRecipes} setSearchedRecipes={setSearchedRecipes} isSearched={isSearched} setIsSearched={setIsSearched}/>
         <h1 className="greeting">{message}</h1>
         <div className="content">
           <h3 className="card-group">Top Picks For You</h3>
@@ -86,10 +115,13 @@ const Home = () => {
           </div>
           <h3 className="card-group">Your Favourites</h3>
           <div className="cards">
-            <RecipeCard1 image="https://source.unsplash.com/random" title="Mutter Panner" />
-            <RecipeCard1 image="https://source.unsplash.com/random" title="Mutter Panner" />
-            <RecipeCard1 image="https://source.unsplash.com/random" title="Mutter Panner" />
-            <RecipeCard1 image="https://source.unsplash.com/random" title="Mutter Panner" />
+            {
+              favourites.map((item,index) => {
+                return(
+                  <RecipeCard1 image={item.imageURL} title={item.title} key={index} onClick={()=>{history.push(`/recipe/${item.id}`)}}/>
+                )
+              })
+            }
           </div>
         </div>
         <Footer />

@@ -1,0 +1,25 @@
+.search-results-list{
+    padding: 80px 0px 20px 0px;
+    background-color: rgba(240, 248, 255);
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    min-height: 60vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.no-results-img{
+    margin: auto;
+    width: 250px;
+    height: 250px;
+    filter: grayscale(40%) invert(75%);
+}
+
+.no-results{
+    margin: 50px auto;
+    height: 300px;
+    text-align: center;
+    font-size: 30px;
+    color: rgb(191,191,191);
+}

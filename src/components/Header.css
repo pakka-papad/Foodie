@@ -8,6 +8,7 @@
     position: fixed;
     top: 0px;
     left: 0px;
+    z-index: 100;
 }
 
 .logo{
@@ -54,9 +55,30 @@
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    z-index: 2;
 }
 
 .search-icon {
     width: 20px;
     height: 20px;
+}
+
+.add-favourites-btn{
+    outline: none;
+    border: none;
+    background-color: transparent;
+    font-size: 22px;
+    color: black;
+    background-color: white;
+    height: 40px;
+    width: 250px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    font-family: 'Nunito';
+}
+
+.add-favourites-btn:hover{
+    background-color: rgb(226,55,68);
+    color: white;
 }
