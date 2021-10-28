@@ -31,13 +31,18 @@ const Home = () => {
   }, [])
 
   const [message, setMessage] = useState("Hello User");
-  useEffect(() => {
+  useEffect(async() => {
       var today = new Date();
       var time = today.getHours();
       var name = "";
-      getAuth().onAuthStateChanged(function(user){
+      getAuth().onAuthStateChanged(async function(user){
         if(user){
-            name = user.displayName;
+            await db.collection("users").doc(user.uid).get()
+            .then(doc => {
+              console.log(doc.data())
+              name = doc.data().displayName;
+            })
+            // console.log(name)
             if(time < 12){
               setMessage("Good Morning ".concat(name));
             }

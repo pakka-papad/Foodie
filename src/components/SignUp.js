@@ -3,8 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import { Link } from 'react-router-dom'
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -12,9 +10,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import firebase from '../firebase';
 import { useHistory } from 'react-router-dom';
 import {auth} from "../firebase"
+import db from "../firebase"
 import { Loading } from './Loading';
 import { useState } from 'react';
 
@@ -56,7 +54,18 @@ export default function SignUp() {
     if(!wrongpass){
       auth
       .createUserWithEmailAndPassword(data.get('email'), data.get('password'))
-      .then((user) => {
+      .then((res) => {
+        console.log(res)
+        if(res.additionalUserInfo.isNewUser){
+          const user = auth.currentUser;
+          db.collection("users").doc(auth.currentUser.uid).set({
+            uid: user.uid,
+            displayName: data.get('fname'),
+            photoURL: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPeVGGBQSs7GFZVVUzG1yOjT_bcRyRNq7eeQ&usqp=CAU"
+          })
+          .then(() => console.log("firebase.js","New user added"))
+          .catch((error) => console.log("firebase.js",error));
+        }
         setLoading(false)
         history.push('/home');
       })
@@ -111,6 +120,21 @@ export default function SignUp() {
                   {wrongemail ? "Wrong email format entered" : ""}
                   {alreadytaken ? "This email already exists" : ""}
                 </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                      required
+                      fullWidth
+                      id="fname"
+                      label="Full name"
+                      name="fname"
+                      autoComplete="fname"
+                      onChange={()=>{
+                        setWrongemail(false);
+                        setWrongpassheader(false);
+                        setAlreadytaken(false);
+                      }}
+                    />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField

@@ -2,22 +2,44 @@ import React, {useEffect, useState} from 'react'
 import "./Header.css"
 import Logo from "./resources/Logo.png"
 import {getAuth} from "firebase/auth"
+import { useHistory } from 'react-router'
 import db , {auth} from "../firebase"
+import { Menu } from '@mui/material';
+import { MenuItem } from '@mui/material';
+
 
 function RecipeHeader(props) {
 
+  const history = useHistory();
   const [displayImage,setDisplayImage] = useState("./resources/Avatar.png");
 
   useEffect(() => {
       getAuth().onAuthStateChanged(function(user){
-          if(user){
-              setDisplayImage(user.photoURL);
-          }
+        if(user){
+            console.log(user)
+            db.collection("users").doc(user.uid).get()
+            .then(doc => {
+                setDisplayImage(doc.data().photoURL);
+                console.log(doc.data().photoURL)
+            })
+        }
           else{
               console.log("Header.js -> user is null");
           }
       })
   },[]);
+
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState()
+
+  const recordButtonPosition = (event) => {
+      setAnchorEl(event.currentTarget);
+      setMenuOpen(true);
+  }
+
+  let closeMenu = () => {
+      setMenuOpen(false);
+  }
 
   const [centreText,setCentreText] = useState("");
 
@@ -48,12 +70,46 @@ function RecipeHeader(props) {
     .catch((error) => console.log(error,"could not add to favourites"));
   }
 
+  const goHome = e => {
+    e.preventDefault();
+    history.push("/home");
+  }
+
+  const signout = () => {
+    auth.signOut().then(function() {
+        // Sign-out successful.
+      }, function(error) {
+        // An error happened.
+    });
+  }
+
+  const getFavourites = () => {
+    history.push("/home")
+  }
+
   return (
       <div>
           <div className="header">
-              <img src={Logo} alt="Foodie-Logo" className="logo"/>
+              <img src={Logo} alt="Foodie-Logo" className="logo" onClick={goHome}/>
               <button className="add-favourites-btn" onClick={addToFavourites}>{centreText}</button>
-              <img src={displayImage} alt="Avatar" className="avatar"/>
+              <img src={displayImage} alt="Avatar" className="avatar" onClick={recordButtonPosition}/>
+              <Menu
+                    anchorEl={anchorEl}
+                    open={menuOpen}
+                    onClose={closeMenu}>
+                    <MenuItem onClick={() => {
+                        closeMenu();
+                        signout();
+                    }}> 
+                        Logout 
+                    </MenuItem> 
+                    <MenuItem onClick={() => {
+                        closeMenu();
+                        getFavourites();
+                    }}> 
+                        See Favourites
+                    </MenuItem> 
+                </Menu>
           </div>
       </div>
   )
