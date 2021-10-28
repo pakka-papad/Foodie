@@ -3,23 +3,45 @@ import "./Header.css"
 import Logo from "./resources/Logo.png"
 import searchIcon from "./resources/SearchIcon.png"
 import {getAuth} from "firebase/auth"
+import db, { auth } from '../firebase'
 import axios from 'axios'
+import { Menu } from '@mui/material';
+import { MenuItem } from '@mui/material';
+import { useHistory } from 'react-router'
 
 function Header(props) {
 
     const [displayImage,setDisplayImage] = useState("./resources/Avatar.png");
+    const history = useHistory()
     const [query, setQuery] = useState("");
 
     useEffect(() => {
         getAuth().onAuthStateChanged(function(user){
             if(user){
-                setDisplayImage(user.photoURL);
+                console.log(user)
+                db.collection("users").doc(user.uid).get()
+                .then(doc => {
+                    setDisplayImage(doc.data().photoURL);
+                    console.log(doc.data().photoURL)
+                })
             }
             else{
                 console.log("Header.js -> user is null");
             }
         })
     },[]);
+
+    const [menuOpen, setMenuOpen] = useState(false);
+    const [anchorEl, setAnchorEl] = useState()
+  
+    const recordButtonPosition = (event) => {
+        setAnchorEl(event.currentTarget);
+        setMenuOpen(true);
+    }
+  
+    let closeMenu = () => {
+        setMenuOpen(false);
+    }
 
     const getData = async() => {
         if(query.trim().toLowerCase() === ""){
@@ -48,6 +70,18 @@ function Header(props) {
         if(props.isSearched === true) props.setIsSearched(false);
     }
 
+    const signout = () => {
+        auth.signOut().then(function() {
+            // Sign-out successful.
+          }, function(error) {
+            // An error happened.
+        });
+    }
+
+    const getFavourites = () => {
+        history.push("/home")
+    }
+
     return (
         <div>
             <div className="header">
@@ -58,7 +92,24 @@ function Header(props) {
                         <img src={searchIcon} alt="search-icon" className="search-icon"/>
                     </button>
                 </form>
-                <img src={displayImage} alt="Avatar" className="avatar"/>
+                <img src={displayImage} alt="Avatar" className="avatar" onClick={recordButtonPosition}/>
+                <Menu
+                    anchorEl={anchorEl}
+                    open={menuOpen}
+                    onClose={closeMenu}>
+                    <MenuItem onClick={() => {
+                        closeMenu();
+                        signout();
+                    }}> 
+                        Logout 
+                    </MenuItem> 
+                    <MenuItem onClick={() => {
+                        closeMenu();
+                        getFavourites();
+                    }}> 
+                        See Favourites
+                    </MenuItem> 
+                </Menu>
             </div>
         </div>
     )
