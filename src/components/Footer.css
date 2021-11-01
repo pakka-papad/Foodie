@@ -1,18 +1,25 @@
 .footer{
-    width:auto;
-    padding: 20px;
+    /* width:auto; */
+    padding:  20px 0 20px 0 ;
     height: auto;
     background-color: rgb(226,55,68);
     display: flex;
     align-items: center;
     justify-content: space-between;
+    position: absolute;
+    bottom: 0;
+    width : 100%
+    /* padding: 0 10% 0 ; */
 }
 
 .footer-logo{
+    /* margin-left: 1000px; */
     width: 60px;
     height: 60px;
     filter: invert(100%);
     -webkit-filter: invert(100%);
+    padding-left: 1%;
+
 }
 
 .social-media-links{

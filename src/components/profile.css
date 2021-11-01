@@ -1,0 +1,38 @@
+body{
+    background-color: aqua;
+    background-image: none;
+}
+
+.bot{
+    position: absolute;
+    bottom : 0px;
+}
+.gap{
+    margin-top: 10vh;
+    /* height: 50vw; */
+}
+.flex-column{
+    display: flex;
+    flex-direction: column;
+    border-style: solid;
+    border: black;
+    align-items: center;
+}
+
+.flex-row{
+    display: flex;
+    border: 2px solid black;
+    align-items: center ;
+    /* border: black; */
+}
+.item-1{
+    width: 25%;
+}
+.item-2{
+    width: 75%;
+}
+.pic{
+    border-radius: 50%;
+    width: 30%;
+    height: 50%;
+}
