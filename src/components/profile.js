@@ -4,7 +4,7 @@ import Header from './Header'
 import Footer from './Footer'
 import db, { auth } from '../firebase'
 import {getAuth} from "firebase/auth"
-import RecipeCard1 from './RecipeCard1'
+import FavouritesList from './FavouritesList'
 class Profile extends React.Component {
   constructor(props) {
     super(props);
@@ -25,45 +25,50 @@ class Profile extends React.Component {
           // console.log(this.state.name);
           this.setState(() =>({name : doc.data().displayName, piclink : doc.data().imageURL}));
         })
-        db.collection("users").doc(user.uid).collection("favourites").get()
+        await db.collection("users").doc(user.uid).collection("favourites").get()
         .then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
-            if(this.state.favs.length < 3){
-              this.setState(this.state.favs.push({
+              let newE = {
                 id: doc.id,
                 title: doc.data().title,
                 imageURL: doc.data().imageURL
-              }));
-            }    
-          });
+              }
+              this.setState(prevState =>({
+                favs  : [ ...prevState.favs , newE]
+              })) 
+          })
         })
         .catch((error) => console.log(error));
 
       })
 
+
     
     }
     
     render() {
-      console.log(this.state.favs)
+      console.log(this.state.favs);
+
       return(
         <>
         
         <Header />        
         <div class = "flex-row gap"> 
-            <div class = "flex-column item-1">
+            <div class = "flex-column  item-1">
                <img class = "pic" src = {this.state.piclink} alt = "img not found"></img>
-               <div class = "name">
+               <h1 class = "name">
                   {this.state.name}
-                </div>
+                </h1>
             </div>
-            {this.state.favs.map((item, i) => {
-                console.log(item,  i)
-              //  <RecipeCard1 image={item.image} title={item.title} key={index}/>
-
-              }
+            <div class = "cards-1">
+            {this.state.favs.map(item => (
+              <>
+               <FavouritesList image={item.imageURL} title={item.title} key={item.index} className = "item-list"/>
+              </>
+              )
             )
           }
+          </div>
         </div>
           
         <Footer className = "bot"/>

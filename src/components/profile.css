@@ -1,12 +1,4 @@
-body{
-    background-color: aqua;
-    background-image: none;
-}
 
-.bot{
-    position: absolute;
-    bottom : 0px;
-}
 .gap{
     margin-top: 10vh;
     /* height: 50vw; */
@@ -14,25 +6,42 @@ body{
 .flex-column{
     display: flex;
     flex-direction: column;
-    border-style: solid;
-    border: black;
-    align-items: center;
+    /* border-style: solid; */
+    /* border: black; */
+    /* align-items: center; */
+    align-self: flex-start;
 }
 
 .flex-row{
     display: flex;
-    border: 2px solid black;
+    /* border: 2px solid black; */
     align-items: center ;
     /* border: black; */
 }
 .item-1{
-    width: 25%;
+    width: 35%;
+    /* height: 30vw; */
+    background-color: antiquewhite;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+    border : solid black ;
 }
 .item-2{
-    width: 75%;
+    width: 65%;
 }
 .pic{
     border-radius: 50%;
     width: 30%;
     height: 50%;
+}
+
+
+.cards-1{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    width: 100%;
+    
 }

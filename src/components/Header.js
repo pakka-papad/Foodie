@@ -79,7 +79,7 @@ function Header(props) {
     }
 
     const getFavourites = () => {
-        history.push("/home")
+        history.push("/profile")
     }
 
     return (
