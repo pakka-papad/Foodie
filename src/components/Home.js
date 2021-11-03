@@ -31,6 +31,7 @@ const Home = () => {
   }, [])
 
   const [message, setMessage] = useState("Hello User");
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async() => {
       var today = new Date();
       var time = today.getHours();

@@ -5,7 +5,7 @@ import NotFound from  './components/NotFound';
 import SignUp from './components/SignUp';
 import Home from './components/Home';
 import RecipeDetails from './components/RecipeDetails';
-
+import Profile from './components/profile'
 function App() {
 
   return (
@@ -19,6 +19,9 @@ function App() {
       </Route>
       <Route exact path='/home' >
         <Home />
+      </Route>
+      <Route exact path='/profile' >
+        <Profile />
       </Route>
       <Route exact path='/recipe/:recipe_id' >
         <RecipeDetails />
