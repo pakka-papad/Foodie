@@ -68,11 +68,13 @@ function Header(props) {
     const goHome = e => {
         e.preventDefault();
         if(props.isSearched === true) props.setIsSearched(false);
+        history.push("/home")
     }
 
-    const signout = () => {
-        auth.signOut().then(function() {
+    const signout = async() => {
+        await auth.signOut().then(function() {
             // Sign-out successful.
+            history.push("/")
           }, function(error) {
             // An error happened.
         });
@@ -98,7 +100,6 @@ function Header(props) {
                     open={menuOpen}
                     onClose={closeMenu}>
                     <MenuItem onClick={() => {
-                        closeMenu();
                         signout();
                     }}> 
                         Logout 
@@ -107,7 +108,7 @@ function Header(props) {
                         closeMenu();
                         getFavourites();
                     }}> 
-                        See Favourites
+                        Profile
                     </MenuItem> 
                 </Menu>
             </div>

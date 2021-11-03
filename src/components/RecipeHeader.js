@@ -78,13 +78,14 @@ function RecipeHeader(props) {
   const signout = () => {
     auth.signOut().then(function() {
         // Sign-out successful.
+        history.push("/")
       }, function(error) {
         // An error happened.
     });
   }
 
   const getFavourites = () => {
-    history.push("/home")
+    history.push("/profile")
   }
 
   return (
@@ -98,7 +99,6 @@ function RecipeHeader(props) {
                     open={menuOpen}
                     onClose={closeMenu}>
                     <MenuItem onClick={() => {
-                        closeMenu();
                         signout();
                     }}> 
                         Logout 
@@ -107,7 +107,7 @@ function RecipeHeader(props) {
                         closeMenu();
                         getFavourites();
                     }}> 
-                        See Favourites
+                        Profile
                     </MenuItem> 
                 </Menu>
           </div>
