@@ -12,46 +12,54 @@ class Profile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name : "na" ,
-      piclink : "none", 
-      favs : [],
-      userid : ""
+      name : "na" , //displayName of the user from database
+      piclink : "none", //img_url of the user from database
+      favs : [], // list of favourites from the database
+      userid : "", //user_id(uid) from the database
+      mounted : false,
     };
     // Binding method
     this.componentDidMount = this.componentDidMount.bind(this);
     
   }
     async componentDidMount(){
-      getAuth().onAuthStateChanged(async (user)=>{
-        await db.collection("users").doc(user.uid).get()
-        .then(doc => {
-          console.log(doc.data())
-          // console.log(this.state.name);
-          this.setState(() =>({name : doc.data().displayName, piclink : doc.data().photoURL, userid: user.uid}));
+      this.mounted = true;
+      if(this.mounted){
+        getAuth().onAuthStateChanged(async(user)=>{
+          if(user){
+            await db.collection("users").doc(user.uid).get()
+            .then(doc => {
+              console.log(doc.data())
+              // console.log(this.state.name);
+              this.setState(() =>({name : doc.data().displayName, piclink : doc.data().photoURL, userid: user.uid}));
+            }).catch((err) => {
+              console.log(err)
+            })
+            await db.collection("users").doc(user.uid).collection("favourites").get()
+            .then((querySnapshot) => {
+              querySnapshot.forEach((doc) => {
+                  let newE = {
+                    id: doc.id,
+                    title: doc.data().title,
+                    imageURL: doc.data().imageURL
+                  }
+                  this.setState(prevState =>({
+                    favs  : [ ...prevState.favs , newE]
+                  })) 
+              })
+              console.log(this.state.favs)
+            })
+            .catch((error) => console.log(error));
+          }
         })
-        await db.collection("users").doc(user.uid).collection("favourites").get()
-        .then((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-              let newE = {
-                id: doc.id,
-                title: doc.data().title,
-                imageURL: doc.data().imageURL
-              }
-              this.setState(prevState =>({
-                favs  : [ ...prevState.favs , newE]
-              })) 
-          })
-          console.log(this.state.favs)
-        })
-        .catch((error) => console.log(error));
-
-      })
+      }
     }
 
-    ratingChanged = (e) => {
-      
+    componentWillUnmount = () => {
+      this.mounted = false;
     }
 
+    //clearAll() function
     clearFavourites = async() => {
       await db.collection("users").doc(this.state.userid).collection("favourites")
       .get()
@@ -63,6 +71,7 @@ class Profile extends React.Component {
       });
     }
 
+    //deleteFromFavourites() function
     deleteFav = async(id) => {
       await db.collection("users").doc(this.state.userid).collection("favourites")
       .get()
@@ -81,21 +90,14 @@ class Profile extends React.Component {
     }
     
     render() {
-      console.log(this.state.favs);
+      // console.log(this.state.favs);
 
       return(
         <>
-        
         <Header />        
         <div className = "flex-row gap"> 
             <div className = "flex-column  item-1">
                <img className = "pic" src = {this.state.piclink} alt = "img not found"></img>
-               <ReactStars
-                count={5}
-                // onChange={ratingChanged}
-                size={24}
-                activeColor="#ffd700"
-              />
                <h2 className = "name">
                   {this.state.name}
                </h2>

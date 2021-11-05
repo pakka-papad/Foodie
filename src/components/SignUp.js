@@ -32,7 +32,7 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function SignUp() {
+const SignUp = () => {
 
   const history = useHistory()
   const [loading, setLoading] = useState(false);
@@ -52,6 +52,7 @@ export default function SignUp() {
       password: data.get('password'),
     });
     if(!wrongpass){
+      // createUserWithEmailAndPassword() function.
       auth
       .createUserWithEmailAndPassword(data.get('email'), data.get('password'))
       .then((res) => {
@@ -198,3 +199,5 @@ export default function SignUp() {
     );
   }
 }
+
+export default SignUp;

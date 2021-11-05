@@ -32,14 +32,16 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function Login() {
+const Login = () => {
 
   const history = useHistory()
   const [user, setUser] = useState(null)
+  const [emptyemail, setEmptyemail] = useState(false);
   const [loading, setLoading] = useState(false);
   const [wrongpass, setWrongpass] = useState(false);
   const [wrongemail, setWrongemail] = useState(false);
   const [notfound, setNotfound] = useState(false);
+  const [emailsend, setEmailsend] = useState(false);
   const [mail, setMail] = useState("")
 
   useEffect(()=>{
@@ -66,6 +68,7 @@ export default function Login() {
     const data = new FormData(event.currentTarget);
     setLoading(true)
     // eslint-disable-next-line no-console
+    // signInWithEmailAndPassword() function
     await auth
     .signInWithEmailAndPassword(data.get('email'), data.get('password'))
     .then((user) => {
@@ -89,10 +92,12 @@ export default function Login() {
     });
   };
 
+  // forgotPassword() function
   const forgotPassword = (email) => {
     auth.sendPasswordResetEmail(email)
     .then(function(){
-      alert("Please check your email")
+      // alert("Please check your email")
+      setEmailsend(true);
     }).catch(function(error){
       console.log(error)
       switch(error.code){
@@ -104,6 +109,9 @@ export default function Login() {
           break;
         case "auth/user-not-found":
           setNotfound(true);
+          break;
+        case "auth/missing-email":
+          setEmptyemail(true);
           break;
       }
     })
@@ -138,6 +146,10 @@ export default function Login() {
               {wrongpass ? "Wrong password entered" : ""}
               {wrongemail ? "Wrong email format entered" : ""}
               {notfound ? "No such user exists" : ""}
+              {emptyemail ? "Please enter an email" : ""}
+            </Typography>
+            <Typography component="h5" variant="h5" style={{color: "green"}}>
+              {emailsend ? "Please check your email" : ""}
             </Typography>
             <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
               <TextField
@@ -152,6 +164,8 @@ export default function Login() {
                   setWrongemail(false);
                   setWrongpass(false);
                   setNotfound(false);
+                  setEmptyemail(false);
+                  setEmailsend(false);
                   setMail(e.target.value)
                 }}
               />
@@ -168,6 +182,8 @@ export default function Login() {
                   setWrongemail(false);
                   setWrongpass(false);
                   setNotfound(false);
+                  setEmailsend(false);
+                  setEmptyemail(false);
                 }}
               />
               <Button
@@ -207,3 +223,5 @@ export default function Login() {
     );
   }
 }
+
+export default Login;
