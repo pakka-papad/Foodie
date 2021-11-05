@@ -82,3 +82,19 @@
     background-color: rgb(226,55,68);
     color: white;
 }
+
+.contributors-modal-box{
+    width: 40vw;
+    height: fit-content;
+    border-radius: 30px;
+    margin: auto;
+    padding: 15px 20px 15px 20px;
+    background: white;
+}
+
+.contributor-modal{
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

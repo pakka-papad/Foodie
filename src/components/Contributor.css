@@ -1,0 +1,14 @@
+.contributor{
+    display: flex;
+    align-items: center;
+}
+
+.contributor-name{
+    margin-left: 30px;
+}
+
+.contributor-profile{
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}

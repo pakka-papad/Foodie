@@ -27,7 +27,7 @@ const RecipeDetails = () => {
   }, [])
 
   async function fetchData(){
-    const URL = `https://api.spoonacular.com/recipes/${recipe_id}/information?includeNutrition=true&apiKey=${process.env.REACT_APP_SPOONACULAR_API_KEY}`;
+    const URL = `https://api.spoonacular.com/recipes/${recipe_id}/information?includeNutrition=true&apiKey="4d672d5df6dc4594a03af14864885607"`;
 
     await axios.get(URL)
     .then(res => {
