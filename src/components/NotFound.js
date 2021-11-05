@@ -13,15 +13,17 @@ const useStyle = makeStyles((theme) => ({
   headingtag: {
     textAlign: "center",
     fontSize: "50px",
+    color: "white"
   },
   linktag: {
     textDecoration: "none",
-    fontSize: "40px"
+    fontSize: "40px",
+    color: "white"
   },
 }));
 
 
-function NotFound(){
+const NotFound = () => {
   
   const classes = useStyle();
 
@@ -33,6 +35,7 @@ function NotFound(){
     </Link>
   </div>
   )
+  
 };
 
 export default NotFound;

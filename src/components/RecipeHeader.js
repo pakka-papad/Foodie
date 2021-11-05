@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import "./Header.css"
 import Logo from "./resources/Logo.png"
-import {getAuth} from "firebase/auth"
+import {getAuth, signOut} from "firebase/auth"
 import { useHistory } from 'react-router'
 import db , {auth} from "../firebase"
 import { Menu } from '@mui/material';
@@ -54,6 +54,7 @@ function RecipeHeader(props) {
     .catch((error) => console.log(error));
   },[]);
 
+  //addToFavourites() function
   const addToFavourites = () => {
     if(centreText === "Favourite") return;
     const recipe = props.recipeInfo;
@@ -70,20 +71,26 @@ function RecipeHeader(props) {
     .catch((error) => console.log(error,"could not add to favourites"));
   }
 
+  // navigateToHome() function
   const goHome = e => {
     e.preventDefault();
     history.push("/home");
   }
 
+  // signout() function
   const signout = () => {
-    auth.signOut().then(function() {
-        // Sign-out successful.
-        history.push("/")
-      }, function(error) {
-        // An error happened.
+    const auth = getAuth();
+    signOut(auth).then(() => {
+      // Sign-out successful.
+      console.log("signout successful");
+      history.push("/")
+    }).catch((error) => {
+      // An error happened.
+      console.log(error);
     });
-  }
+}
 
+  // viewFavourites() function
   const getFavourites = () => {
     history.push("/profile")
   }
@@ -100,6 +107,7 @@ function RecipeHeader(props) {
                     onClose={closeMenu}>
                     <MenuItem onClick={() => {
                         signout();
+                        // closeMenu();
                     }}> 
                         Logout 
                     </MenuItem> 

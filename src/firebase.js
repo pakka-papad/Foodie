@@ -15,6 +15,7 @@ const db = firebase.firestore()
 const auth = firebase.auth()
 const provider = new firebase.auth.GoogleAuthProvider();
 provider.setCustomParameters({ prompt: 'select_account' });
+// signInWithGoogle() function.
 export const signInWithGoogle = () => auth.signInWithPopup(provider).then((res) => {
 	console.log(res);
 	if(res.additionalUserInfo.isNewUser){

@@ -6,30 +6,33 @@ import twitter from "./resources/twitter.png"
 import instagram from "./resources/instagram.png"
 import snapchat from "./resources/snapchat.png"
 
+class Footer extends React.Component {
 
-function Footer() {
-    return (
-        <div>
-            <div className="footer">
-                <img src={logo} className="footer-logo"/>
-                <div className="social-media-links">
-                    <h4>Find Us At</h4>
-                    <a href="#">
-                        <img src={facebook} className="socials-logo" alt="social-logo"/>
-                    </a>
-                    <a href="#">
-                        <img src={instagram} className="socials-logo" alt="social-logo"/>
-                    </a>
-                    <a href="#">
-                        <img src={twitter} className="socials-logo" alt="social-logo"/>
-                    </a>
-                    <a href="#">
-                        <img src={snapchat} className="socials-logo" alt="social-logo"/>
-                    </a>
+    render(){
+        return(
+            <div>
+                <div className="footer">
+                    <img src={logo} className="footer-logo"/>
+                    <div className="social-media-links">
+                        <h4>Find Us At</h4>
+                        <a href="#">
+                            <img src={facebook} className="socials-logo" alt="social-logo"/>
+                        </a>
+                        <a href="#">
+                            <img src={instagram} className="socials-logo" alt="social-logo"/>
+                        </a>
+                        <a href="#">
+                            <img src={twitter} className="socials-logo" alt="social-logo"/>
+                        </a>
+                        <a href="#">
+                            <img src={snapchat} className="socials-logo" alt="social-logo"/>
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
-    )
+        )
+    }
+    
 }
 
-export default Footer
+export default Footer;

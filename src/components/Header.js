@@ -2,21 +2,21 @@ import React, {useEffect, useState} from 'react'
 import "./Header.css"
 import Logo from "./resources/Logo.png"
 import searchIcon from "./resources/SearchIcon.png"
-import {getAuth} from "firebase/auth"
+import {getAuth, signOut} from "firebase/auth"
 import db, { auth } from '../firebase'
 import axios from 'axios'
 import { Menu } from '@mui/material';
 import { MenuItem } from '@mui/material';
 import { useHistory } from 'react-router'
 
-function Header(props) {
+const Header = (props) => {
 
     const [displayImage,setDisplayImage] = useState("./resources/Avatar.png");
     const history = useHistory()
     const [query, setQuery] = useState("");
 
     useEffect(() => {
-        getAuth().onAuthStateChanged(function(user){
+        const unsubscribe = getAuth().onAuthStateChanged(function(user){
             if(user){
                 console.log(user)
                 db.collection("users").doc(user.uid).get()
@@ -29,6 +29,7 @@ function Header(props) {
                 console.log("Header.js -> user is null");
             }
         })
+        return unsubscribe;
     },[]);
 
     const [menuOpen, setMenuOpen] = useState(false);
@@ -71,12 +72,15 @@ function Header(props) {
         history.push("/home")
     }
 
-    const signout = async() => {
-        await auth.signOut().then(function() {
-            // Sign-out successful.
-            history.push("/")
-          }, function(error) {
-            // An error happened.
+    const signout = () => {
+        const auth = getAuth();
+        signOut(auth).then(() => {
+          // Sign-out successful.
+          console.log("signout successful");
+          history.push("/")
+        }).catch((error) => {
+          // An error happened.
+          console.log(error);
         });
     }
 
@@ -101,6 +105,7 @@ function Header(props) {
                     onClose={closeMenu}>
                     <MenuItem onClick={() => {
                         signout();
+                        // closeMenu();
                     }}> 
                         Logout 
                     </MenuItem> 
