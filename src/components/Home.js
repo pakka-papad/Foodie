@@ -75,7 +75,7 @@ const Home = () => {
 
 
   async function fetchData(){
-    const URL = `https://api.spoonacular.com/recipes/random?number=4&apiKey="4d672d5df6dc4594a03af14864885607"`;
+    const URL = `https://api.spoonacular.com/recipes/random?number=4&apiKey=${process.env.REACT_APP_SPOONACULAR_API_KEY}`;
 
     await axios.get(URL)
     .then(res => {
