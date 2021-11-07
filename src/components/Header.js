@@ -53,7 +53,7 @@ const Header = (props) => {
             alert("You did not input any item to be searched")
         }else{
             query.trim().toLowerCase().replace(" ", "+")
-            const URL = `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${query}&apiKey=${process.env.REACT_APP_SPOONACULAR_API_KEY}`
+            const URL = `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${query}&apiKey="4d672d5df6dc4594a03af14864885607"`
             await axios.get(URL)
             .then(res => {
                 console.log(res.data)
