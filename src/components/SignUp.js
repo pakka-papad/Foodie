@@ -129,7 +129,7 @@ const SignUp = () => {
                       id="fname"
                       label="Full name"
                       name="fname"
-                      autoComplete="fname"
+                      autoComplete="off"
                       onChange={()=>{
                         setWrongemail(false);
                         setWrongpassheader(false);
@@ -144,7 +144,7 @@ const SignUp = () => {
                     id="email"
                     label="Email Address"
                     name="email"
-                    autoComplete="email"
+                    autoComplete="off"
                     onChange={()=>{
                       setWrongemail(false);
                       setWrongpassheader(false);

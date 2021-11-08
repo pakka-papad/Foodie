@@ -158,7 +158,7 @@ const Login = () => {
                 id="email"
                 label="Email Address"
                 name="email"
-                autoComplete="email"
+                autoComplete="off"
                 required
                 onChange={(e)=>{
                   setWrongemail(false);
